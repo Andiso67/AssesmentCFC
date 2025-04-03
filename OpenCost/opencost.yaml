@@ -1,0 +1,23 @@
+# Rodar con Docker Compose
+# Docker compose -f opencost.yaml up
+name: opencost
+version: '3'
+
+services:
+ opencost-cost-model:
+  image: "ghcr.io/opencost/opencost:latest"
+  ports:
+   - "9003:9003"
+  volumes:
+   - type: bind
+     source: /tmp
+     target: /tmp
+  environment:
+   - CLOUD_COST_ENABLED=true
+   - CLOUD_COST_CONFIG_PATH=/path/to/cloud-integration.json
+ opencost-ui:
+  image: "ghcr.io/opencost/opencost-ui:latest"
+  ports:
+   - "9090:9090"
+  environment:
+   - API_SERVER=opencost-cost-model
